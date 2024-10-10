@@ -28,7 +28,7 @@ public class TCPServer {
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
-            // 네티 서버를 설정하고 시작하기 위한 도구 클래스
+            // 서버를 설정하고 시작하기 위한 도구 클래스
             ServerBootstrap sbs = new ServerBootstrap();
 
             // parent group, child group
