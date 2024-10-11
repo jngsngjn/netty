@@ -34,7 +34,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         System.out.println("수신한 문자열 [" + readMessage + "]");
     }
 
-    // 서버로부터의 데이터 수신이 완료되면 호출
+    // 서버로부터 데이터 수신 완료 후 호출
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
         ctx.close();
