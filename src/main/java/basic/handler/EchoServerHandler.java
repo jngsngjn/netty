@@ -37,12 +37,12 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) {
-        System.out.println("channel registered: " + ctx.channel().remoteAddress());
-        ctx.writeAndFlush("[EXIT] command: \"EXIT or exit\"");
+        System.out.println("Channel registered: " + ctx.channel().remoteAddress());
+        ctx.writeAndFlush("[EXIT] Command: \"EXIT or exit\"");
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
-        System.out.println("channel unregistered: " + ctx.channel());
+        System.out.println("Channel registered: " + ctx.channel().remoteAddress());
     }
 }
