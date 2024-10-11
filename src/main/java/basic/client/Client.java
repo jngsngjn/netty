@@ -10,7 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-public final class Client {
+public class Client {
     public void start() throws InterruptedException {
         EventLoopGroup group = new NioEventLoopGroup();
 

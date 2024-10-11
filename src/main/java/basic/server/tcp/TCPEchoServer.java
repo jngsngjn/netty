@@ -11,12 +11,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-public class EchoServer {
+public class TCPEchoServer {
 
     // 클라이언트의 요청을 받을 포트
     private final int port;
 
-    public EchoServer(int port) {
+    public TCPEchoServer(int port) {
         this.port = port;
     }
 
