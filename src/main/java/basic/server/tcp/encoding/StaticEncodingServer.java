@@ -1,6 +1,6 @@
-package basic.server.tcp;
+package basic.server.tcp.encoding;
 
-import basic.handler.KoreanServerHandler;
+import basic.handler.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,12 +13,12 @@ import io.netty.handler.codec.string.StringEncoder;
 
 import java.nio.charset.Charset;
 
-public class KoreanEncodingTestServer {
+public class StaticEncodingServer {
 
     private final int port;
     private final Charset charset;
 
-    public KoreanEncodingTestServer(int port, Charset charset) {
+    public StaticEncodingServer(int port, Charset charset) {
         this.port = port;
         this.charset = charset;
     }
@@ -37,7 +37,7 @@ public class KoreanEncodingTestServer {
                             ChannelPipeline pipeline = sc.pipeline();
                             pipeline.addLast(new StringDecoder(charset));
                             pipeline.addLast(new StringEncoder(charset));
-                            pipeline.addLast(new KoreanServerHandler());
+                            pipeline.addLast(new EchoServerHandler());
                         }
                     });
 

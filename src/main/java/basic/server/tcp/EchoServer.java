@@ -1,6 +1,6 @@
 package basic.server.tcp;
 
-import basic.handler.BufferTranslatorHandler;
+import basic.handler.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -8,6 +8,8 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 public class EchoServer {
 
@@ -26,7 +28,7 @@ public class EchoServer {
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
-            // 서버를 설정하고 시작하기 위한 도구 클래스
+            // 서버를 설정하고 시작하기 위한 클래스
             ServerBootstrap sbs = new ServerBootstrap();
 
             // parent group, child group
@@ -44,13 +46,14 @@ public class EchoServer {
                             ChannelPipeline pipeline = socketChannel.pipeline();
 
                             // 바이트 데이터를 문자열로 변환하는 디코더. 클라이언트로부터 받은 데이터를 문자열로 변환
-//                            pipeline.addLast(new StringDecoder());
+                            pipeline.addLast(new StringDecoder());
 
                             // 서버에서 클라이언트로 보낼 데이터를 문자열에서 바이트로 변환하는 인코더. 네트워크에서 전송 가능한 형식으로 데이터를 변환
-//                            pipeline.addLast(new StringEncoder());
+                            pipeline.addLast(new StringEncoder());
 
                             // 직접 정의한 핸들러 등록 (데이터를 처리하고 응답을 보내는 역할)
-                            pipeline.addLast(new BufferTranslatorHandler());
+                            pipeline.addLast(new EchoServerHandler());
+//                            pipeline.addLast(new BufferTranslator());
                         }
                     });
 

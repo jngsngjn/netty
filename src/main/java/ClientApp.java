@@ -1,7 +1,8 @@
-import basic.client.Client;
+import basic.client.UTF8Client;
 
 public class ClientApp {
     public static void main(String[] args) throws InterruptedException {
-        new Client().start();
+//        new BasicClient().start();
+        new UTF8Client("localhost", 8080).start();
     }
 }
