@@ -1,7 +1,7 @@
-import basic.server.TCPServer;
+import basic.server.EchoServer;
 
 public class AppMain {
     public static void main(String[] args) throws InterruptedException {
-        new TCPServer(8080).start();
+        new EchoServer(8080).start();
     }
 }

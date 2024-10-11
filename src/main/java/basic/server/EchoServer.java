@@ -1,6 +1,6 @@
 package basic.server;
 
-import basic.handler.TCPServerHandler;
+import basic.handler.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,12 +11,12 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-public class TCPServer {
+public class EchoServer {
 
     // 클라이언트의 요청을 받을 포트
     private final int port;
 
-    public TCPServer(int port) {
+    public EchoServer(int port) {
         this.port = port;
     }
 
@@ -52,7 +52,7 @@ public class TCPServer {
                             pipeline.addLast(new StringEncoder());
 
                             // 직접 정의한 핸들러 등록 (데이터를 처리하고 응답을 보내는 역할)
-                            pipeline.addLast(new TCPServerHandler());
+                            pipeline.addLast(new EchoServerHandler());
                         }
                     });
 

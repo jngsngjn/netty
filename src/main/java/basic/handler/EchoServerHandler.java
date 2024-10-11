@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 // ChannelInboundHandlerAdapter: 네티의 기본 핸들러로서, 수신된 데이터를 처리하는 데 사용
-public class TCPServerHandler extends ChannelInboundHandlerAdapter {
+public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     /*
     클라이언트가 데이터를 서버로 전송했을 때 호출
