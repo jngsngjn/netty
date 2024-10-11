@@ -1,4 +1,4 @@
-package basic.server;
+package basic.server.tcp;
 
 import basic.handler.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;

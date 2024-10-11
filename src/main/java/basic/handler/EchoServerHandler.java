@@ -12,10 +12,17 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        System.out.println("Received: " + msg);
+        String receivedMessage = msg.toString().trim();
+        if (receivedMessage.equalsIgnoreCase("exit")) {
+            System.out.println("Received [EXIT] command, closing connection...");
+            ctx.close();
+            return;
+        }
+
+        System.out.println("Received: " + receivedMessage);
 
         // 클라이언트에게 받은 메시지를 "Echo: "와 함께 다시 보냄
-        ctx.writeAndFlush("Echo: " + msg);
+        ctx.writeAndFlush("Echo: " + receivedMessage);
     }
 
     /*
@@ -26,5 +33,16 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
         ctx.close();
+    }
+
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) {
+        System.out.println("channel registered: " + ctx.channel().remoteAddress());
+        ctx.writeAndFlush("[EXIT] command: \"EXIT or exit\"");
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) {
+        System.out.println("channel unregistered: " + ctx.channel());
     }
 }
