@@ -9,31 +9,41 @@ import java.nio.charset.Charset;
 
 public class DynamicEncodingHandler extends ChannelInboundHandlerAdapter {
 
-    // 기본 인코딩
-    private Charset charset = CharsetUtil.UTF_8;
+    private Charset charset = CharsetUtil.UTF_8;  // 기본 인코딩은 UTF-8
+    private boolean encodingDetected = false;     // 인코딩이 감지되었는지 여부
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        if (msg instanceof ByteBuf) {
-            ByteBuf buf = (ByteBuf) msg;
+        ByteBuf buf = (ByteBuf) msg;
 
-            // 첫 번째 메시지로 인코딩 정보를 수신한다고 가정
-            String encodingInfo = buf.toString(CharsetUtil.UTF_8).trim();
-            if (encodingInfo.startsWith("ENCODING=")) {
-                String encoding = encodingInfo.split("=")[1].trim();
-                if (encoding.equalsIgnoreCase("EUC-KR")) {
-                    charset = Charset.forName("EUC-KR");
-                    System.out.println("Client encoding set to EUC-KR");
-                } else {
-                    charset = CharsetUtil.UTF_8;
-                    System.out.println("Client encoding set to UTF-8");
+        try {
+            if (!encodingDetected) {
+                // 첫 번째 메시지는 항상 UTF-8로 해석하여 인코딩 정보를 받는다.
+                String encodingInfo = buf.toString(CharsetUtil.UTF_8).trim();
+                if (encodingInfo.startsWith("ENCODING=")) {
+                    String encoding = encodingInfo.split("=")[1].trim();
+                    System.out.println("encoding = " + encoding);
+
+                    if (encoding.equalsIgnoreCase("EUC-KR")) {
+                        charset = Charset.forName("EUC-KR");  // 인코딩 설정
+                        System.out.println("Client encoding set to EUC-KR");
+                    } else {
+                        charset = CharsetUtil.UTF_8;  // 기본 UTF-8 설정
+                        System.out.println("Client encoding set to UTF-8");
+                    }
+
+                    encodingDetected = true;  // 인코딩 정보 감지 완료
                 }
             } else {
-                // 인코딩 정보 이외의 일반 메시지 처리
-                System.out.println("Received: " + buf.toString(charset));
-                ctx.writeAndFlush(ctx.alloc().buffer().writeBytes(("Echo: " + buf.toString(charset)).getBytes(charset)));
+                // 이후 메시지는 감지된 인코딩 방식으로 처리
+                String received = buf.toString(charset);
+                System.out.println("Received message: " + received);
+
+                // 클라이언트에 응답 전송
+                ctx.writeAndFlush(ctx.alloc().buffer().writeBytes(("Echo: " + received).getBytes(charset)));
             }
-            buf.release();
+        } finally {
+            buf.release();  // ByteBuf 해제
         }
     }
 
