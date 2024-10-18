@@ -12,6 +12,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     // 클라이언트가 서버에 연결되었을 때 호출
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
+        System.out.println("서버 연결 성공");
         String sendMessage = "Hello, server!";
 
         // ByteBuf 객체 생성
@@ -35,10 +36,10 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     // 서버로부터 데이터 수신 완료 후 호출
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.close();
-    }
+//    @Override
+//    public void channelReadComplete(ChannelHandlerContext ctx) {
+//        ctx.close();
+//    }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

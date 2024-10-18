@@ -6,6 +6,7 @@ target/
 ### 추가 ###
 vcs.xml
 uiDesigner.xml
+misc.xml
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
