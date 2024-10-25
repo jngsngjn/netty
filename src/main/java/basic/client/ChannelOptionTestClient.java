@@ -25,11 +25,11 @@ public class ChannelOptionTestClient {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(workerGroup)
                     .channel(NioSocketChannel.class)
-                    .option(ChannelOption.SO_KEEPALIVE, true)
-                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
-                    .option(ChannelOption.SO_SNDBUF, 1048576)
-                    .option(ChannelOption.SO_RCVBUF, 1048576)
-                    .option(ChannelOption.SO_LINGER, 10)
+//                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+//                    .option(ChannelOption.SO_SNDBUF, 1048576)
+//                    .option(ChannelOption.SO_RCVBUF, 1048576)
+//                    .option(ChannelOption.SO_LINGER, 10)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel sc) {
@@ -37,7 +37,13 @@ public class ChannelOptionTestClient {
                             pipeline.addLast(new ClientHandler());
                         }
                     });
+
             ChannelFuture cf = bootstrap.connect("localhost", port).sync();
+            boolean isConnected = false;
+            isConnected = true;
+            while (isConnected) {
+                Thread.sleep(1000);
+            }
             cf.channel().closeFuture().sync();
             System.out.println("closed connection from server");
         } finally {
