@@ -1,6 +1,6 @@
 package basic.client;
 
-import basic.handler.EUCKRClientHandler;
+import basic.handler.client.EUCKRClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -23,7 +23,7 @@ public class EUCKRClient {
         this.port = port;
     }
 
-    public void start() throws InterruptedException {
+    public void connect() throws InterruptedException {
         NioEventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();

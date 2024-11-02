@@ -1,6 +1,6 @@
 package basic.server.tcp.encoding;
 
-import basic.handler.EchoServerHandler;
+import basic.handler.server.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

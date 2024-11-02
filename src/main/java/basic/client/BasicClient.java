@@ -1,6 +1,6 @@
 package basic.client;
 
-import basic.handler.ClientHandler;
+import basic.handler.client.ClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

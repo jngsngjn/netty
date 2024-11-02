@@ -1,6 +1,6 @@
 package basic.client;
 
-import basic.handler.UTF8ClientHandler;
+import basic.handler.client.UTF8ClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -23,7 +23,7 @@ public class UTF8Client {
         this.port = port;
     }
 
-    public void start() throws InterruptedException {
+    public void connect() throws InterruptedException {
         NioEventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();

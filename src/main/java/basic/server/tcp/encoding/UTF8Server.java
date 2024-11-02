@@ -1,51 +1,46 @@
 package basic.server.tcp.encoding;
 
-import basic.handler.DynamicEncodingHandler;
+import basic.handler.server.UTF8ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
-
-public class DynamicEncodingServer {
+public class UTF8Server {
 
     private final int port;
+    private static final Logger log = LogManager.getLogger(UTF8Server.class);
 
-    // 클라이언트별 charset 저장
-    private final Map<ChannelId, Charset> clientCharsets = new HashMap<>();
-
-    public DynamicEncodingServer(int port) {
+    public UTF8Server(int port) {
         this.port = port;
     }
 
     public void start() throws InterruptedException {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        NioEventLoopGroup workGroup = new NioEventLoopGroup();
+        NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
-            bootstrap.group(bossGroup, workGroup)
+            bootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel sc) {
                             ChannelPipeline pipeline = sc.pipeline();
-                            pipeline.addLast(new DynamicEncodingHandler());
+                            pipeline.addLast(new UTF8ServerHandler());
                         }
                     });
             ChannelFuture cf = bootstrap.bind(port).sync();
-            System.out.println("Server started on port " + port);
+            log.info("[Server] start on port {}", port);
             cf.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
-            workGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
         }
     }
 }

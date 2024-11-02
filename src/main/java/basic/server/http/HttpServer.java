@@ -1,6 +1,6 @@
 package basic.server.http;
 
-import basic.handler.HttpServerHandler;
+import basic.handler.server.HttpServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,9 +10,12 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class HttpServer {
 
+    private static final Logger log = LogManager.getLogger(HttpServer.class);
     private final int port;
 
     public HttpServer(int port) {
@@ -44,7 +47,7 @@ public class HttpServer {
                     });
 
             ChannelFuture channelFuture = bootstrap.bind(port).sync();
-            System.out.println("HTTP Server started on port: " + port);
+            log.info("HTTP Server started on port: {}", port);
             channelFuture.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
