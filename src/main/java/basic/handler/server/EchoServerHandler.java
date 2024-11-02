@@ -12,7 +12,11 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
     // 클라이언트가 데이터를 서버로 전송했을 때 호출
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws InterruptedException {
+        // 응답을 5초 지연시킴
+        System.out.println("[SERVER] 응답을 10초 지연...");
+        Thread.sleep(10000);
+
         String receivedMessage = msg.toString().trim();
         if (receivedMessage.equalsIgnoreCase("exit")) {
             log.info("Received [EXIT] command, closing connection...");
