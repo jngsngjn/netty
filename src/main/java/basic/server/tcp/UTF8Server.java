@@ -1,4 +1,4 @@
-package basic.server.tcp.encoding;
+package basic.server.tcp;
 
 import basic.handler.server.UTF8ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;

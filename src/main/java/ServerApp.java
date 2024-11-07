@@ -1,8 +1,7 @@
-import basic.server.http.HttpServer;
+import basic.server.tcp.MyServer;
 
 public class ServerApp {
     public static void main(String[] args) throws InterruptedException {
-        new HttpServer(8080).start();
-//        new UTF8Server(8080).start();
+        new MyServer(8080).start();
     }
 }

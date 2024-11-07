@@ -1,26 +1,24 @@
-package basic.server.tcp.encoding;
+package basic.server.tcp;
 
-import basic.handler.server.EchoServerHandler;
+import basic.handler.server.MyServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.timeout.IdleStateHandler;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
-public class StaticEncodingServer {
-
+public class MyServer {
     private final int port;
-    private final Charset charset;
 
-    public StaticEncodingServer(int port, Charset charset) {
+    public MyServer(int port) {
         this.port = port;
-        this.charset = charset;
     }
 
     public void start() throws InterruptedException {
@@ -35,14 +33,13 @@ public class StaticEncodingServer {
                         @Override
                         protected void initChannel(SocketChannel sc) {
                             ChannelPipeline pipeline = sc.pipeline();
-                            pipeline.addLast(new StringDecoder(charset));
-                            pipeline.addLast(new StringEncoder(charset));
-                            pipeline.addLast(new EchoServerHandler());
+                            sc.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer(",", StandardCharsets.UTF_8)));
+                            pipeline.addLast(new IdleStateHandler(5, 0, 0));
+                            pipeline.addLast(new MyServerHandler());
                         }
                     });
-
             ChannelFuture cf = bootstrap.bind(port).sync();
-            System.out.println("Server started on port " + port + " with charset: " + charset.displayName());
+            System.out.println("Server started on port " + port);
             cf.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();
