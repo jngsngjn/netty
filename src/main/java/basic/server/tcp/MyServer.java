@@ -1,5 +1,7 @@
 package basic.server.tcp;
 
+import java.nio.charset.StandardCharsets;
+
 import basic.handler.server.MyServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
@@ -11,8 +13,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
-
-import java.nio.charset.StandardCharsets;
 
 public class MyServer {
     private final int port;
@@ -35,6 +35,7 @@ public class MyServer {
                             ChannelPipeline pipeline = sc.pipeline();
                             sc.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer(",", StandardCharsets.UTF_8)));
                             pipeline.addLast(new IdleStateHandler(5, 0, 0));
+                            // pipeline.addLast(new IdleStateHandler(15, 0, 0));
                             pipeline.addLast(new MyServerHandler());
                         }
                     });
